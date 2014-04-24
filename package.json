@@ -1,0 +1,9 @@
+{
+	"name": "AngularDemo-NodeJS-BE",
+	"version": "0.0.1",
+	"description": "Test NodeJS based REST Backend",
+	"main": "app.js",
+	"dependencies": {
+		"express": "~3.4.0"
+	}
+}
