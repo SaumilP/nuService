@@ -1,5 +1,8 @@
-//var userModule = require("./users.js");
-var userRepository = new UserRepository();
+var userModule = require("./users");
+
+var userRepository = new userModule.UserRepository();
+console.log('# typeof createUsers: ' + typeof userRepository.createUsers);
+
 userRepository.createUsers();
 
 var express = require('express');
@@ -69,84 +72,3 @@ app.delete(baseUrl + '/users/:id', function(req, res) {
 });
 
 app.listen(process.env.PORT || MY_PORT);
-
-// Duplicated Code
-function User(id, firstName, lastName) {
-  this.id = id;
-  this.firstName = firstName;
-  this.lastName = lastName;
-};
-
-
-function UserRepository() {
-
-  this.users = [];
-
-  this.createUsers = function() {
-    var numberOfUsers = 10;
-    for (var i = 0; i < numberOfUsers; i++) {
-      var id = i + 1;
-      this.users.push(new User(id, 'John ' + id, 'Doe'));
-    };
-    return this.users;
-  };
-
-  this.getMaxUserId = function() {
-    return Math.max.apply(Math, this.users.map(function(user) {
-      return user.id;
-    }));
-  };
-
-  this.getNumberOfUsers = function() {
-    return this.users.length;
-  };
-
-  this.getAll = function() {
-    return this.users;
-  };
-
-  this.getById = function(id) {
-    var foundUser = false;
-    for (var i = 0; i < this.users.length; i++) {
-      var user = this.users[i];
-      console.log('...checking user.id ' + user.id);
-      if (user.id == id) {
-        foundUser = true;
-        return user;
-      };
-    };
-    if (!foundUser) {
-      console.log('Could not find user with id: ' + id);
-      return 'user with id ' + id + ' not found.';
-    };
-  };
-
-  this.addNewUser = function(firstName, lastName) {
-    var newUser = new User(this.getMaxUserId() + 1, firstName, lastName);
-    this.users.push(newUser);
-    return this.getById(newUser.id);
-  };
-
-  this.changeUser = function(id, firstName, lastName) {
-    var user = this.getById(id);
-    user.firstName = firstName;
-    user.lastName = lastName;
-    return user;
-  };
-
-  this.deleteUser = function(id) {
-    // sorry, i'm tired and don't know javascript that well...
-    var indexToDelete = -1;
-    for (var i = 0; i < this.users.length; i++) {
-      var user = this.users[i];
-      if (user.id == id) {
-        indexToDelete = i;
-        break;
-      };
-    };
-
-    if (indexToDelete >= 0) {
-      this.users.splice(indexToDelete, 1);
-    };
-  };
-};
